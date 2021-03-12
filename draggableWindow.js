@@ -1,4 +1,7 @@
 /// 20210312
+/// A class for a simple Draggable - resizable window
+
+export const version = `20210312`;
 
 let style = document.createElement('style');
 document.head.appendChild(style);
@@ -27,15 +30,15 @@ style.sheet.insertRule(`.draggableWindowHeader{
     }`);
 
 style.sheet.insertRule(`.draggableWindowResize{
-    --rect-size : 1em;
+    --rect-size : 1.1em;
     position : absolute;
     bottom : 0;
     left :  calc(100% - var(--rect-size));
     margin : 0;
     width : var(--rect-size);
     height : var(--rect-size);
-    background: rgb(255,255,255);
-    background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(153,153,153,1) 50%, rgba(0,0,0,1) 100%);
+    background: rgb(204,204,204);
+    background: linear-gradient(135deg, rgba(204,204,204,1) 0%, rgba(204,204,204,1) 50%, rgba(0,0,0,1) 100%);
     cursor: nw-resize
     }`);    
 
@@ -60,7 +63,7 @@ style.sheet.insertRule(`.draggableWindowBodyText{
     }`);
 
 
-class DraggableWindow{
+export class DraggableWindow{
     static draggableWindowIntances;
     
     constructor(){
@@ -90,8 +93,8 @@ class DraggableWindow{
         this.windowBodyText.classList.add('draggableWindowBodyText');
 
         
-        this.windowdraggableWindowResize = document.createElement('div');
-        this.windowdraggableWindowResize.classList.add('draggableWindowResize');
+        this.windowResize = document.createElement('div');
+        this.windowResize.classList.add('draggableWindowResize');
          
         this.windowHeader.onmouseover = () => {
             this.window.style.zIndex = 1000;
@@ -114,31 +117,31 @@ class DraggableWindow{
         }
         this.windowHeader.onmouseup = () => {this.windowHeader.onmousemove=null}
 
-        this.windowdraggableWindowResize.onmouseover = () => {
+        this.windowResize.onmouseover = () => {
             this.window.style.zIndex = 1000;
         };
-        this.windowdraggableWindowResize.onmouseleave = () => {
-            this.windowdraggableWindowResize.onmousemove=null
+        this.windowResize.onmouseleave = () => {
+            this.windowResize.onmousemove=null
             this.window.style.zIndex = this.draggableWindowIntances+1;
         };
-        this.windowdraggableWindowResize.onmousedown = (e) => {
+        this.windowResize.onmousedown = (e) => {
             let mX= e.clientX; 
             let mY= e.clientY;
             const w = this.window.getBoundingClientRect();
             let wW= w.width; 
             let wH= w.height;
-            this.windowdraggableWindowResize.onmousemove = (e) => {
+            this.windowResize.onmousemove = (e) => {
                 this.window.style.width = `${wW+e.clientX-mX}px`;
                 this.window.style.height = `${wH+e.clientY-mY}px`;
             }
         }
-        this.windowdraggableWindowResize.onmouseup = () => {this.wwindowdraggableWindowResize.onmousemove=null}
+        this.windowResize.onmouseup = () => {this.windowResize.onmousemove=null}
 
         this.windowHeader.appendChild(this.windowHeaderTitle);
         this.window.appendChild(this.windowHeader);
         this.windowBody.appendChild(this.windowBodyText);
         this.window.appendChild(this.windowBody);
-        this.window.appendChild(this.windowdraggableWindowResize);
+        this.window.appendChild(this.windowResize);
         this.container.appendChild(this.window);
     }
 
@@ -163,8 +166,8 @@ class DraggableWindow{
         this.windowBodyText.innerHTML = str;
     }
 
-    get content(){
-        return this.windowBodyText.innerHTML;
+    get contentP(){
+        return this.windowBodyText;
     }
 }
 
