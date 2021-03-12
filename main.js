@@ -23,9 +23,12 @@ class DragableWindow{
         this.DragableWindowIntances = (this.DragableWindowIntances || 0) + 1;
         this.zIndex = this.DragableWindowIntances+1;
 
+        this.container = (arguments[0] && arguments[0].container)?arguments[0].container:document.body;
+
         this.window = document.createElement('div');
         this.window.classList.add('dragableWindow');
         this.window.style.zIndex = this.zIndex;
+        this.window.id = (arguments[0] && arguments[0].id)?arguments[0].id:'';
 
         this.windowHeader = document.createElement('div');
         this.windowHeader.classList.add('dragableWindowHeader');
@@ -41,21 +44,18 @@ class DragableWindow{
 
         this.windowBodyText = document.createElement('p');
         this.windowBodyText.classList.add('dragableWindowBodyText');
-        let t = 'Hola Caracola,';
-        for (let i=0; i<200; i++)
-            t += 'Hola Caracola,';
-        this.windowBodyText.innerHTML = t;
-
-        
          
-        this.windowHeader.onmouseover = () => {this.windowHeader.style.cursor='move'};
+        this.windowHeader.onmouseover = () => {
+            this.window.style.zIndex = 1000;
+            this.windowHeader.style.cursor='move'
+        };
         this.windowHeader.onmouseleave = () => {
             this.windowHeader.style.cursor='default'; 
             this.windowHeader.onmousemove=null
             this.window.style.zIndex = this.DragableWindowIntances+1;
         };
         this.windowHeader.onmousedown = (e) => {
-            this.window.style.zIndex = 1000;
+            
             let mX= e.clientX; 
             let mY= e.clientY;
             const w = this.window.getBoundingClientRect();
@@ -72,7 +72,7 @@ class DragableWindow{
         this.window.appendChild(this.windowHeader);
         this.windowBody.appendChild(this.windowBodyText);
         this.window.appendChild(this.windowBody);
-        container.appendChild(this.window);
+        this.container.appendChild(this.window);
     }
 
     /**
@@ -105,7 +105,8 @@ let window2 = new DragableWindow();
 window2.title = "Hola Caracola";
 window2.color = '#0f0';
 
-let window = new DragableWindow({title:'Debug',color:'#0aa'});
+let window = new DragableWindow({id:'myWindow',title:'Debug',color:'#0aa',container:container});
 window.content = " Hola Caracola";
-window.content += " Hola Caracola";
+for (let i=0; i<200; i++)
+    window.content += " Hola Caracola";
 
