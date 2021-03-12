@@ -10,13 +10,13 @@
     
 
 </body>
-<script src="main.js"></script>
+<script src="draggableWindow.js"></script>
 <script>
-let window2 = new DragableWindow();
+let window2 = new DraggableWindow();
 window2.title = "Hola Caracola";
 window2.color = '#0f0';
 
-let window3 = new DragableWindow({id:'myWindow',title:'Debug',color:'#0aa',container:container});
+let window3 = new DraggableWindow({id:'myWindow',title:'Debug',color:'#0aa',container:document.body});
 window3.content = " Hola Caracola";
 for (let i=0; i<200; i++)
     window3.content += " Hola Caracola";
