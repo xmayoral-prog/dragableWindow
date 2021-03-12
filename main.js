@@ -3,18 +3,66 @@ container.id = 'container';
 document.body.appendChild(container);
 
 
-await (function(url='dragableWindow.css') {
-    return new Promise((resolve)=>{
-        let link = document.createElement('link');
-        link.type = 'text/css';
-        link.rel = 'stylesheet';
-        link.onload = function() {resolve();};
-        link.href = url;
+// await (function(url='dragableWindow.css') {
+//     return new Promise((resolve)=>{
+//         let link = document.createElement('link');
+//         link.type = 'text/css';
+//         link.rel = 'stylesheet';
+//         link.onload = function() {resolve();};
+//         link.href = url;
 
-        let headScript = document.querySelector('script');
-        headScript.parentNode.insertBefore(link, headScript);
-    })
-})();
+//         let headScript = document.querySelector('script');
+//         headScript.parentNode.insertBefore(link, headScript);
+//     })
+// })();
+
+
+
+let style = document.createElement('style');
+document.head.appendChild(style);
+style.sheet.insertRule(`:root {
+    --windowHeader-height: 3em;
+    }`);
+
+style.sheet.insertRule(`.dragableWindow{
+        position : absolute;
+        width : 400px;
+        height : 300px;
+        box-shadow : 10px 10px 5px grey;    
+        border: 1px solid #aaa;
+        background-color: #ccc
+        }`);
+
+style.sheet.insertRule(`.dragableWindowHeader{
+    position : absolute;
+    top : 0;
+    left : 0;
+    margin : 0;
+    width : 100%;
+    height : var(--windowHeader-height);
+    background-color : #980d0d
+    }`);
+
+style.sheet.insertRule(`.dragableWindowHeaderTitle{
+    position : absolute;
+    left : 1em;
+    color : #fff;
+    font-weight : bold;
+    user-select : none
+    }`);
+
+style.sheet.insertRule(`.dragableWindowBody{
+    position : absolute;
+    top : var(--windowHeader-height);
+    left : 0;
+    height : calc(100% - var(--windowHeader-height));
+    overflow : auto;
+    }`);
+
+style.sheet.insertRule(`.dragableWindowBodyText{
+    margin : 1em;    
+    }`);
+
 
 class DragableWindow{
     static DragableWindowIntances;

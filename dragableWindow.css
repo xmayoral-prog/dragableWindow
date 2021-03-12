@@ -1,8 +1,8 @@
-:root {
---header-height: 3em;
+:root__ {
+--header-height: 6em;
 }
 
-.dragableWindow{
+.dragableWindow___{
 position : absolute;
 width : 400px;
 height : 300px;
