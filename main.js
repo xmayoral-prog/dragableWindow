@@ -25,13 +25,13 @@ style.sheet.insertRule(`:root {
     }`);
 
 style.sheet.insertRule(`.dragableWindow{
-        position : absolute;
-        width : 400px;
-        height : 300px;
-        box-shadow : 10px 10px 5px grey;    
-        border: 1px solid #aaa;
-        background-color: #ccc
-        }`);
+    position : absolute;
+    width : 400px;
+    height : 300px;
+    box-shadow : 10px 10px 5px grey;    
+    border: 1px solid #aaa;
+    background-color: #ccc
+    }`);
 
 style.sheet.insertRule(`.dragableWindowHeader{
     position : absolute;
@@ -40,8 +40,22 @@ style.sheet.insertRule(`.dragableWindowHeader{
     margin : 0;
     width : 100%;
     height : var(--windowHeader-height);
-    background-color : #980d0d
+    background-color : #980d0d;
+    cursor: move
     }`);
+
+style.sheet.insertRule(`.dragableWindowResize{
+    --rect-size : 1em;
+    position : absolute;
+    bottom : 0;
+    left :  calc(100% - var(--rect-size));
+    margin : 0;
+    width : var(--rect-size);
+    height : var(--rect-size);
+    background: rgb(255,255,255);
+    background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(153,153,153,1) 50%, rgba(0,0,0,1) 100%);
+    cursor: nw-resize
+    }`);    
 
 style.sheet.insertRule(`.dragableWindowHeaderTitle{
     position : absolute;
@@ -92,18 +106,20 @@ class DragableWindow{
 
         this.windowBodyText = document.createElement('p');
         this.windowBodyText.classList.add('dragableWindowBodyText');
+
+        
+        this.windowDragableWindowResize = document.createElement('div');
+        this.windowDragableWindowResize.classList.add('dragableWindowResize');
          
         this.windowHeader.onmouseover = () => {
             this.window.style.zIndex = 1000;
-            this.windowHeader.style.cursor='move'
+            
         };
         this.windowHeader.onmouseleave = () => {
-            this.windowHeader.style.cursor='default'; 
             this.windowHeader.onmousemove=null
             this.window.style.zIndex = this.DragableWindowIntances+1;
         };
         this.windowHeader.onmousedown = (e) => {
-            
             let mX= e.clientX; 
             let mY= e.clientY;
             const w = this.window.getBoundingClientRect();
@@ -116,10 +132,31 @@ class DragableWindow{
         }
         this.windowHeader.onmouseup = () => {this.windowHeader.onmousemove=null}
 
+        this.windowDragableWindowResize.onmouseover = () => {
+            this.window.style.zIndex = 1000;
+        };
+        this.windowDragableWindowResize.onmouseleave = () => {
+            this.windowDragableWindowResize.onmousemove=null
+            this.window.style.zIndex = this.DragableWindowIntances+1;
+        };
+        this.windowDragableWindowResize.onmousedown = (e) => {
+            let mX= e.clientX; 
+            let mY= e.clientY;
+            const w = this.window.getBoundingClientRect();
+            let wW= w.width; 
+            let wH= w.height;
+            this.windowDragableWindowResize.onmousemove = (e) => {
+                this.window.style.width = `${wW+e.clientX-mX}px`;
+                this.window.style.height = `${wH+e.clientY-mY}px`;
+            }
+        }
+        this.windowDragableWindowResize.onmouseup = () => {this.wwindowDragableWindowResize.onmousemove=null}
+
         this.windowHeader.appendChild(this.windowHeaderTitle);
         this.window.appendChild(this.windowHeader);
         this.windowBody.appendChild(this.windowBodyText);
         this.window.appendChild(this.windowBody);
+        this.window.appendChild(this.windowDragableWindowResize);
         this.container.appendChild(this.window);
     }
 
@@ -149,12 +186,4 @@ class DragableWindow{
     }
 }
 
-let window2 = new DragableWindow();
-window2.title = "Hola Caracola";
-window2.color = '#0f0';
-
-let window = new DragableWindow({id:'myWindow',title:'Debug',color:'#0aa',container:container});
-window.content = " Hola Caracola";
-for (let i=0; i<200; i++)
-    window.content += " Hola Caracola";
 
