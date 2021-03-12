@@ -3,6 +3,8 @@ position : absolute;
 width : 400px;
 height : 300px;
 box-shadow : 10px 10px 5px grey;    
+border: 1px solid #aaa;
+background-color: #ccc
 }
 
 .dragableWindowHeader{
@@ -28,7 +30,6 @@ position : absolute;
 top : 3em;
 left : 0;
 height : calc(100% - 3em);
-background-color : #ccc;
 overflow : auto;
 }
 
